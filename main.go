@@ -15,7 +15,7 @@ func Menu(header string, options []string) int {
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
-		fmt.Print(rc + sc)
+		//fmt.Print(rc + sc)
 		fmt.Printf("\n\n")
 		fmt.Println(header + ":")
 		fmt.Println("")
