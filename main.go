@@ -5,26 +5,40 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"strconv"
 )
 
-func Menu(header string, options []string) {
+const sc = "\u001B7"
+const rc = "\u001B8"
+
+func Menu(header string, options []string) int {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Printf("\n\n")
-	fmt.Println(header + ":")
-	fmt.Println("")
+	for {
+		fmt.Print(rc + sc)
+		fmt.Printf("\n\n")
+		fmt.Println(header + ":")
+		fmt.Println("")
+	
+		for index, option := range options {
+			fmt.Printf("%d: %s\n", index+1, option)
+		}
+	
+		fmt.Print("-> ")
+		text, _ := reader.ReadString('\n')
+		// Remove the new line crap
+		text = strings.Replace(text, "\r", "", -1)
+		text = strings.Replace(text, "\n", "", -1)
+	
+		input, err := strconv.Atoi(text)
+	
+		if err != nil || input > len(options) || input <= 0 {
+			fmt.Println("Invalid Input")
+			continue
+		}
 
-	for index, option := range options {
-		fmt.Printf("%d: %s\n", index+1, option)
+		return input - 1
 	}
-
-	fmt.Print("-> ")
-	text, _ := reader.ReadString('\n')
-	// Remove the new line
-	text = strings.Replace(text, "\n", "", -1)
-
-	fmt.Println(text)
-
 }
 
 func main() {
@@ -35,8 +49,9 @@ func main() {
 	fmt.Println("|                          |")
 	fmt.Println(" --------------------------")
 
-	Menu("Select Project", []string{"Zenith Cruzer", "Vans RV-9"})
+	hello := Menu("Select Project", []string{"Zenith Cruzer", "Vans RV-9"})
 
+	fmt.Println(hello)
 	// Loop until exit
 
 }
